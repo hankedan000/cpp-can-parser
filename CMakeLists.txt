@@ -32,6 +32,13 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS True)
 add_library(cpp-can-parser
 	${CPP_CAN_PARSER_COMPILATION_TYPE} 
 	${CPPPARSER_SRC_FILES})
+
+file(GLOB_RECURSE CPPPARSER_PUBLIC_HEADERS "include/cpp-can-parser/*.h")
+set_target_properties(
+	cpp-can-parser PROPERTIES
+		PUBLIC_HEADER 
+		"${CPPPARSER_PUBLIC_HEADERS}"
+)
 target_include_directories(cpp-can-parser 
 	PUBLIC ${CPPPARSER_INCLUDE_DIRECTORY}
 		   ${CMAKE_CURRENT_BINARY_DIR}/exports/
@@ -39,9 +46,6 @@ target_include_directories(cpp-can-parser
 generate_export_header(cpp-can-parser
 	BASE_NAME cpp_can_parser
 	EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/exports/cpp_can_parser_export.h)
-install(FILES cpp-can-parser
-		${CMAKE_CURRENT_BINARY_DIR}/cpp_can_parser_export.h
-		DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include)
 
 add_executable(can-parse 
 	utils/can-parse/can-parse.cpp
@@ -49,6 +53,16 @@ add_executable(can-parse
 	utils/can-parse/print-single-frame.cpp
 	utils/can-parse/check-frame.cpp)
 target_link_libraries(can-parse cpp-can-parser)
+
+install(
+	TARGETS can-parse cpp-can-parser 
+	RUNTIME
+		DESTINATION bin
+	LIBRARY
+		DESTINATION lib
+	PUBLIC_HEADER
+		DESTINATION "include/cpp-can-parser"
+)
 
 if(BUILD_TESTING)
 	file(COPY tests/dbc-files/
