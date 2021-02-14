@@ -33,7 +33,9 @@ add_library(cpp-can-parser
 	${CPP_CAN_PARSER_COMPILATION_TYPE} 
 	${CPPPARSER_SRC_FILES})
 
-file(GLOB_RECURSE CPPPARSER_PUBLIC_HEADERS "include/cpp-can-parser/*.h")
+file(GLOB_RECURSE CPPPARSER_PUBLIC_HEADERS
+	"include/cpp-can-parser/*.h"
+	"${CMAKE_CURRENT_BINARY_DIR}/exports/*.h")
 set_target_properties(
 	cpp-can-parser PROPERTIES
 		PUBLIC_HEADER 
