@@ -21,7 +21,8 @@ set(CPPPARSER_SRC_FILES
 	src/parsing/DBCParser.cpp
 	src/parsing/ParsingUtils.cpp
 	src/parsing/Tokenizer.cpp
-	src/analysis/CANFrameAnalysis.cpp)
+	src/analysis/CANFrameAnalysis.cpp
+	src/codec/endianess.cpp)
 
 set(CPP_CAN_PARSER_COMPILATION_TYPE SHARED)
 if(CPP_CAN_PARSER_USE_STATIC)
