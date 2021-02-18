@@ -7,7 +7,7 @@
 #include <map>
 #include <vector>
 
-#include "cpp-can-parser/cpp_can_parser_export.h"
+#include "cpp_can_parser_export.h"
 
 namespace CppCAN {
 
@@ -84,6 +84,11 @@ public:
 
   void setChoices(const std::map<unsigned int, std::string>& choices);
 
+  using raw_t = uint64_t;
+  raw_t decode(const void* bytes) const;
+
+  double rawToPhys(raw_t raw) const;
+
 private:
   std::string name_;
   unsigned int start_bit_;
@@ -95,6 +100,7 @@ private:
   Range range_;
   std::string comment_;
   std::map<unsigned int, std::string> choices_;
+  uint64_t raw_mask_;
 };
 
 /**
