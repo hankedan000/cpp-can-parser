@@ -44,8 +44,9 @@ set_target_properties(
 )
 target_include_directories(cpp-can-parser 
 	PUBLIC ${CPPPARSER_INCLUDE_DIRECTORY}
-		   ${CMAKE_CURRENT_BINARY_DIR}/exports/
-	PRIVATE ${CPPPARSER_INCLUDE_DIRECTORY_PRIVATE})
+			${CMAKE_CURRENT_BINARY_DIR}/exports/
+	PRIVATE ${CPPPARSER_INCLUDE_DIRECTORY_PRIVATE}
+			"include/")
 generate_export_header(cpp-can-parser
 	BASE_NAME cpp_can_parser
 	EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/exports/cpp_can_parser_export.h)
