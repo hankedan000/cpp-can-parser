@@ -96,4 +96,12 @@ if(BUILD_TESTING)
 	
 	add_test(NAME cpc-checkframe-decimal-scale-1
 			 COMMAND can-parse checkframe dbc-files/decimal-scale-1.dbc)
+
+	add_executable(cpc-test-decode
+		tests/test-decode.cpp)
+	target_link_libraries(cpc-test-decode PUBLIC cpp-can-parser)
+
+	add_test(NAME decode-test
+			 COMMAND cpc-test-decode)
+	
 endif()

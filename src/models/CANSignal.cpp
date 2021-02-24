@@ -274,8 +274,8 @@ CANSignal::CANSignal(const std::string & name, unsigned int start_bit, unsigned 
     }
   }
 
-  // FIXME for now, everything is interpreted as a float
-  ExtendedValueType _extended_value_type = ExtendedValueType::Float;
+  // FIXME for now, everything is interpreted as an Integer
+  ExtendedValueType _extended_value_type = ExtendedValueType::Integer;
   
   _decode = ::make_decode(alignment, endianness_, signedness_, _extended_value_type);
   // _encode = ::encode;
