@@ -7,7 +7,7 @@
 #include <map>
 #include <vector>
 
-#include "cpp-can-parser/cpp_can_parser_export.h"
+#include "cpp_can_parser_export.h"
 
 namespace CppCAN {
 
@@ -51,6 +51,10 @@ public:
     BigEndian, LittleEndian
   };
 
+  enum class ExtendedValueType {
+      Integer, Float, Double
+  };
+
 public:
   CANSignal() = delete;
   CANSignal(const std::string& name, unsigned int start_bit, unsigned int length,
@@ -84,6 +88,11 @@ public:
 
   void setChoices(const std::map<unsigned int, std::string>& choices);
 
+  using raw_t = uint64_t;
+  inline raw_t decode(const void* bytes) const noexcept { return _decode(this, bytes); }
+
+  inline double rawToPhys(raw_t raw) const { return _raw_to_phys(this, raw); }
+
 private:
   std::string name_;
   unsigned int start_bit_;
@@ -95,6 +104,22 @@ private:
   Range range_;
   std::string comment_;
   std::map<unsigned int, std::string> choices_;
+
+protected:
+  // instead of using virtuals dynamic dispatching use function pointers
+  raw_t (*_decode)(const CANSignal* sig, const void* bytes) noexcept {nullptr};
+  void (*_encode)(const CANSignal* sig, raw_t raw, void* buffer) noexcept {nullptr};
+  double (*_raw_to_phys)(const CANSignal* sig, raw_t raw) noexcept {nullptr};
+  raw_t (*_phys_to_raw)(const CANSignal* sig, double phys) noexcept {nullptr};
+
+public:
+  // for performance
+  uint64_t _mask;
+  uint64_t _mask_signed;
+  uint64_t _fixed_start_bit_0;
+  uint64_t _fixed_start_bit_1;
+  uint64_t _byte_pos;
+
 };
 
 /**

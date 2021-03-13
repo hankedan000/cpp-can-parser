@@ -21,7 +21,8 @@ set(CPPPARSER_SRC_FILES
 	src/parsing/DBCParser.cpp
 	src/parsing/ParsingUtils.cpp
 	src/parsing/Tokenizer.cpp
-	src/analysis/CANFrameAnalysis.cpp)
+	src/analysis/CANFrameAnalysis.cpp
+	src/codec/endianess.cpp)
 
 set(CPP_CAN_PARSER_COMPILATION_TYPE SHARED)
 if(CPP_CAN_PARSER_USE_STATIC)
@@ -43,8 +44,9 @@ set_target_properties(
 )
 target_include_directories(cpp-can-parser 
 	PUBLIC ${CPPPARSER_INCLUDE_DIRECTORY}
-		   ${CMAKE_CURRENT_BINARY_DIR}/exports/
-	PRIVATE ${CPPPARSER_INCLUDE_DIRECTORY_PRIVATE})
+			${CMAKE_CURRENT_BINARY_DIR}/exports/
+	PRIVATE ${CPPPARSER_INCLUDE_DIRECTORY_PRIVATE}
+			"include/")
 generate_export_header(cpp-can-parser
 	BASE_NAME cpp_can_parser
 	EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/exports/cpp_can_parser_export.h)
@@ -94,4 +96,12 @@ if(BUILD_TESTING)
 	
 	add_test(NAME cpc-checkframe-decimal-scale-1
 			 COMMAND can-parse checkframe dbc-files/decimal-scale-1.dbc)
+
+	add_executable(cpc-test-decode
+		tests/test-decode.cpp)
+	target_link_libraries(cpc-test-decode PUBLIC cpp-can-parser)
+
+	add_test(NAME decode-test
+			 COMMAND cpc-test-decode)
+	
 endif()
